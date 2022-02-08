@@ -1,5 +1,8 @@
 import './Form.css'
 import React, { useState } from 'react'
+import unicorn from '../../img/unicorn.png'
+import check from '../../img/check.png'
+import upload from '../../img/upload.png'
 
 function Form () {
   // formats a JS date to 'yyyy-mm-dd'
@@ -27,11 +30,17 @@ function Form () {
     }
   )
 
-  // const [log, setLog] = useState('')
+  const [toasterShow, setToasterShow] = useState('no-toast')
 
   // const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()]
   // const [isFocus, setIsFocus] = useState('')
+  const handleSubmit = () => {
+    setToasterShow('toast')
 
+    setTimeout(function () {
+      setToasterShow('no-toast')
+    }, 3000)
+  }
   const years = []
   for (let i = 100; i > 0; i--) {
     years.push(<option value={1922 + i}>{1922 + i}</option>)
@@ -43,8 +52,10 @@ function Form () {
 
   return (
     <div className="settings-form-with-img">
+      <div className={toasterShow}><img id="check" src={check} />Changes have been saved successfully</div>
       <div>
       <div className="settings-form-container">
+      <h2>Settings</h2>
       <form className="form-wrapper">
         <label>first name*</label>
         <input
@@ -124,13 +135,19 @@ function Form () {
         <hr className="light-line"/>
       </form>
         <div className="settings-submit-wrapper">
-          <button className="save-btn">Save Changes</button>
+          <button onClick={ () => handleSubmit() } className="save-btn">Save Changes</button>
           <button className="discard-btn">Discard</button>
         </div>
       </div>
       </div>
       <div className="image-drop">
-        Image
+        <label className="image">image</label>
+        <div className="image-wrapper">
+        <img src={unicorn}/>
+        <img id="upload" src={upload}/>
+        </div>
+
+        <h5 className="remove-image">Remove</h5>
       </div>
     </div>
   )
