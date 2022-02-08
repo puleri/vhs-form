@@ -1,23 +1,16 @@
+// Organized most CSS relevant for form page into one file
 import './Form.css'
+// React and useState import
 import React, { useState } from 'react'
+
+// images exported from figma
 import unicorn from '../../img/unicorn.png'
 import check from '../../img/check.png'
 import upload from '../../img/upload.png'
 
+// Form component (functional)
 function Form () {
-  // formats a JS date to 'yyyy-mm-dd'
-  // const formatDate = (date) => {
-  //   const d = new Date(date)
-  //   let month = '' + (d.getMonth() + 1)
-  //   let day = '' + d.getDate()
-  //   const year = d.getFullYear()
-  //
-  //   if (month.length < 2) month = '0' + month
-  //   if (day.length < 2) day = '0' + day
-  //
-  //   return [year, month, day].join('-')
-  // }
-
+  // State management for form
   const [formValues, setFormValues] = useState(
     {
       firstName: '',
@@ -30,10 +23,67 @@ function Form () {
     }
   )
 
+  // state hook used for show/hide toaster notification
   const [toasterShow, setToasterShow] = useState('no-toast')
 
-  // const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()]
-  // const [isFocus, setIsFocus] = useState('')
+  // Functionw that validates unique inputs
+  // and updates the UI to let the prompt the user when
+  // inputs are invalid
+  const firstNameValidation = (e) => {
+    if (!e.target.value) {
+      setFirstValid({ isValid: false, classes: 'settings-input not-valid' })
+    } else {
+      setFirstValid({ isValid: true, classes: 'settings-input' })
+    }
+  }
+  const lastNameValidation = (e) => {
+    if (!e.target.value) {
+      setLastValid({ isValid: false, classes: 'settings-input not-valid' })
+    } else {
+      setLastValid({ isValid: true, classes: 'settings-input' })
+    }
+  }
+  const emailValidation = (e) => {
+    const validateEmail = (email) => {
+      return String(email)
+        .toLowerCase()
+        .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+    }
+
+    if (!validateEmail(e.target.value)) {
+      setEmailValid({ isValid: false, classes: 'settings-input not-valid' })
+    } else {
+      setEmailValid({ isValid: true, classes: 'settings-input' })
+    }
+  }
+  const phoneValidation = (e) => {
+    const validatePhone = (phone) => {
+      // eslint-disable-next-line
+      const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+      return re.test(phone)
+    }
+    if (!validatePhone(e.target.value)) {
+      setPhoneValid({ isValid: false, classes: 'settings-input not-valid' })
+    } else {
+      setPhoneValid({ isValid: true, classes: 'settings-input' })
+    }
+  }
+  const bioValidation = (e) => {
+    if (!e.target.value) {
+      setBioValid({ isValid: false, classes: 'settings-input bio not-valid' })
+    } else {
+      setBioValid({ isValid: true, classes: 'settings-input bio' })
+    }
+  }
+
+  const [firstValid, setFirstValid] = useState({ isValid: true, classes: 'settings-input' })
+  const [lastValid, setLastValid] = useState({ isValid: true, classes: 'settings-input' })
+  const [emailValid, setEmailValid] = useState({ isValid: true, classes: 'settings-input' })
+  const [phoneValid, setPhoneValid] = useState({ isValid: true, classes: 'settings-input' })
+  const [bioValid, setBioValid] = useState({ isValid: true, classes: 'settings-input bio' })
+
+  // Function that handles the submission of the form and calls the toaster function
+  // if form is completed and validated
   const handleSubmit = () => {
     setToasterShow('toast')
 
@@ -41,6 +91,8 @@ function Form () {
       setToasterShow('no-toast')
     }, 3000)
   }
+
+  // loop creating date options
   const years = []
   for (let i = 100; i > 0; i--) {
     years.push(<option value={1922 + i}>{1922 + i}</option>)
@@ -59,32 +111,36 @@ function Form () {
       <form className="form-wrapper">
         <label>first name*</label>
         <input
-        className="settings-input"
+        className={firstValid.classes}
         onChange={ (e) => setFormValues({ ...formValues, firstName: e.target.value })}
+        onBlur={(e) => firstNameValidation(e) }
         name='firstName'
         value={formValues.firstName}
         type="text" />
-
+        {firstValid.isValid}
         <label>last name*</label>
         <input
-        className="settings-input"
+        className={lastValid.classes}
         onChange={ (e) => setFormValues({ ...formValues, lastName: e.target.value })}
-        name='firstName'
+        onBlur={(e) => lastNameValidation(e) }
+        name='lastname'
         value={formValues.lastName}
         type="text" />
 
         <label>email*</label>
         <input
-        className="settings-input"
+        className={emailValid.classes}
         onChange={ (e) => setFormValues({ ...formValues, email: e.target.value })}
+        onBlur={(e) => emailValidation(e) }
         name='firstName'
         value={formValues.email}
         type="text" />
 
         <label>phone*</label>
         <input
-        className="settings-input"
+        className={phoneValid.classes}
         onChange={ (e) => setFormValues({ ...formValues, phone: e.target.value })}
+        onBlur={(e) => phoneValidation(e) }
         name='firstName'
         value={formValues.phone}
         type="text" />
@@ -125,17 +181,18 @@ function Form () {
         }
 
         <label>bio*</label>
-        <input
-        className="settings-input bio"
+        <textarea
+        className={bioValid.classes}
         onChange={ (e) => setFormValues({ ...formValues, bio: e.target.value })}
+        onBlur={(e) => bioValidation(e) }
         name='firstName'
         value={formValues.bio}
-        type="text" />
+        rows="20" cols="50" />
 
         <hr className="light-line"/>
       </form>
         <div className="settings-submit-wrapper">
-          <button onClick={ () => handleSubmit() } className="save-btn">Save Changes</button>
+          <button disabled={(toasterShow === 'toast')} onClick={ () => handleSubmit() } className="save-btn">Save Changes</button>
           <button className="discard-btn">Discard</button>
         </div>
       </div>
@@ -146,7 +203,6 @@ function Form () {
         <img src={unicorn}/>
         <img id="upload" src={upload}/>
         </div>
-
         <h5 className="remove-image">Remove</h5>
       </div>
     </div>

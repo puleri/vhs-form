@@ -7,18 +7,23 @@ h2 {
 h5 {
   color: #a3aab1;
 }
-
-input:focus, select:focus {
+textarea {
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  }
+input:focus, select:focus, textarea:focus {
   outline: none;
   border: 1px solid #317f6d;
 }
-input:hover, select:hover {
+input:hover, select:hover, textarea:hover {
   border: 1px solid #63686f;
 }
 label {
   color: #a3aab1;
   font-variant: small-caps;
   font-size: 12px;
+  font-weight: bold;
   text-align: left;
   width: 400px;
   margin: 15px 0 0;
@@ -72,6 +77,9 @@ label {
   min-height: 100vh;
 }
 .settings-input, select {
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   color: #ccd3da;
   background: #2a2e35 ;
   border: 1px solid #3e434a;
@@ -85,6 +93,7 @@ label {
   width: 400px;
 }
 .bio {
+  resize: none;
   height: 200px;
 }
 select {
@@ -102,6 +111,15 @@ select {
   min-height: 35px;
 }
 
+.not-valid {
+  border: 1px solid red;
+}
+.not-valid:hover {
+  border: 1px solid #63686f;
+}
+.not-valid:focus {
+  border: 1px solid #317f6d;
+}
 
 .light-line {
   border: none;
@@ -116,6 +134,7 @@ select {
   justify-content: flex-start;
 }
 .save-btn, .discard-btn {
+  cursor: pointer;
   color: #eaf2f9;
   border: none;
   font-weight: bold;
@@ -176,4 +195,16 @@ select {
 @keyframes fadeout {
   from {top: 0px;}
   to {top: -70px;}
+}
+
+/* Change autofill css for Chrome */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 300px #2a2e35 inset !important;
+}
+/*Change text in autofill textbox*/
+input:-webkit-autofill{
+    -webkit-text-fill-color: #ccd3da !important;
 }
