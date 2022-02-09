@@ -1,8 +1,8 @@
 // React and useState import
 import React, { useState } from 'react'
-// import MonthSelect from './MonthSelect.js'
-// import DaySelect from './DaySelect.js'
-// import YearSelect from './YearSelect.js'
+import MonthSelect from './MonthSelect.js'
+import DaySelect from './DaySelect.js'
+import YearSelect from './YearSelect.js'
 
 // Organized most CSS relevant for form page into one file
 import './Form.css'
@@ -190,11 +190,13 @@ function Form () {
 
         <label>select your date of birth*</label>
       {
-        // <div id="dropdown-date" style={{ display: 'flex' }}>
-        // <MonthSelect />
-        // <DaySelect />
-        // <YearSelect />
-        // </div>
+        <div id="dropdown-date" style={{ display: 'flex' }}>
+        <MonthSelect
+                onBlur={(e) => monthValidation(e)}
+                className={monthValid.classes} />
+        <DaySelect />
+        <YearSelect />
+        </div>
       }
         <div id="dropdown-date">
         <select

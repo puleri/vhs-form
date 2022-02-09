@@ -149,8 +149,11 @@ option {
   border: 1px solid #317f6d;
 }
 
-button:focus {
+.save-btn:focus {
   outline: 5px solid #317f6d;
+}
+.discard-btn:focus {
+  outline: 1px solid yellow;
 }
 .light-line {
   border: none;
@@ -246,4 +249,39 @@ input:-webkit-autofill:active{
 /*Change text in autofill textbox*/
 input:-webkit-autofill{
     -webkit-text-fill-color: #ccd3da !important;
+}
+
+.up {
+  transform: rotate(180deg);
+}
+
+.month-red:focus, .red:focus {
+  outline: none !important;
+  border: 1px solid #317f6d !important;
+}
+.month-red {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  left:-1px;
+  border-radius: 5px;
+  height: 25px;
+  border: 1px solid red;
+  width: 142px;
+  padding: 0 8px;
+}
+.day-red {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  left:-1px;
+  border-radius: 5px;
+  height: 25px;
+  border: 1px solid red;
+  width: 82px;
+  padding: 0 8px;
+}
+.red:hover,{
+  outline: none;
+  border: 1px solid #63686f;
 }
