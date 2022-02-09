@@ -1,8 +1,13 @@
-// Organized most CSS relevant for form page into one file
-import './Form.css'
 // React and useState import
 import React, { useState } from 'react'
+// import MonthSelect from './MonthSelect.js'
+// import DaySelect from './DaySelect.js'
+// import YearSelect from './YearSelect.js'
 
+// Organized most CSS relevant for form page into one file
+import './Form.css'
+
+// Library for drag and drop file uploading
 import Dropzone from 'react-dropzone'
 
 // images exported from figma
@@ -110,6 +115,9 @@ function Form () {
   const [yearValid, setYearValid] = useState({ isValid: true, classes: 'year-picker' })
   const [bioValid, setBioValid] = useState({ isValid: true, classes: 'settings-input bio' })
 
+  // Function that toggles between "Upload" and "Remove"
+  const handlePic = (e) => profilePic && setProfilePic([{ preview: '' }])
+
   // Function that handles the submission of the form and calls the toaster function
   // if form is completed and validated
   const handleSubmit = () => {
@@ -138,7 +146,7 @@ function Form () {
       <div className={toasterShow}><img id="check" src={check} />Changes have been saved successfully</div>
       <div>
       <div className="settings-form-container">
-      <h2>Settings</h2>
+      <h2 className="settings-header">Settings</h2>
       <form className="form-wrapper">
         <label>first name*</label>
         <input
@@ -181,6 +189,13 @@ function Form () {
         }
 
         <label>select your date of birth*</label>
+      {
+        // <div id="dropdown-date" style={{ display: 'flex' }}>
+        // <MonthSelect />
+        // <DaySelect />
+        // <YearSelect />
+        // </div>
+      }
         <div id="dropdown-date">
         <select
         onBlur={(e) => monthValidation(e)}
@@ -237,7 +252,7 @@ function Form () {
       <div className="image-drop">
         <label className="image">image</label>
         <div className="image-wrapper">
-        <Dropzone onDrop={acceptedFiles => {
+        <Dropzone className="drag-drop" onDrop={acceptedFiles => {
           console.log(acceptedFiles)
           setProfilePic(
             acceptedFiles.map((file) => Object.assign(file, {
@@ -249,9 +264,11 @@ function Form () {
             <section id="drag-drop">
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <img style={{ width: '125px' }} src={ profilePic[0].preview || unicorn }/>
-                <img id="upload" src={upload}/>
-                <h5 className="remove-image">Upload</h5>
+                <img style={{ width: '75px' }} src={ profilePic[0].preview || unicorn }/>
+                <img
+                id="upload"
+                src={upload}/>
+                <h5 className="upload-label" onClick={(e) => handlePic(e)}>{ profilePic[0].preview ? 'Remove' : 'Upload'}</h5>
               </div>
             </section>
           )}
