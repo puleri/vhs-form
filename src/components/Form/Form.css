@@ -110,6 +110,9 @@ select {
 .month-picker, .day-picker, .year-picker {
   min-height: 35px;
 }
+#drag-drop {
+  cursor: pointer;
+}
 
 .not-valid {
   border: 1px solid red;

@@ -3,6 +3,8 @@ import './Form.css'
 // React and useState import
 import React, { useState } from 'react'
 
+import Dropzone from 'react-dropzone'
+
 // images exported from figma
 import unicorn from '../../img/unicorn.png'
 import check from '../../img/check.png'
@@ -22,6 +24,7 @@ function Form () {
       birthYear: ''
     }
   )
+  const [profilePic, setProfilePic] = useState([{ preview: '' }])
 
   // state hook used for show/hide toaster notification
   const [toasterShow, setToasterShow] = useState('no-toast')
@@ -68,6 +71,27 @@ function Form () {
       setPhoneValid({ isValid: true, classes: 'settings-input' })
     }
   }
+  const monthValidation = (e) => {
+    if (!e.target.value) {
+      setMonthValid({ isValid: false, classes: 'month-picker not-valid' })
+    } else {
+      setMonthValid({ isValid: true, classes: 'month-picker' })
+    }
+  }
+  const dayValidation = (e) => {
+    if (!e.target.value) {
+      setDayValid({ isValid: false, classes: 'day-picker not-valid' })
+    } else {
+      setDayValid({ isValid: true, classes: 'day-picker' })
+    }
+  }
+  const yearValidation = (e) => {
+    if (!e.target.value) {
+      setYearValid({ isValid: false, classes: 'year-picker not-valid' })
+    } else {
+      setYearValid({ isValid: true, classes: 'year-picker' })
+    }
+  }
   const bioValidation = (e) => {
     if (!e.target.value) {
       setBioValid({ isValid: false, classes: 'settings-input bio not-valid' })
@@ -76,32 +100,39 @@ function Form () {
     }
   }
 
+  // State hooks are all used to check validation and referenced in JSX to update UI accordingly
   const [firstValid, setFirstValid] = useState({ isValid: true, classes: 'settings-input' })
   const [lastValid, setLastValid] = useState({ isValid: true, classes: 'settings-input' })
   const [emailValid, setEmailValid] = useState({ isValid: true, classes: 'settings-input' })
   const [phoneValid, setPhoneValid] = useState({ isValid: true, classes: 'settings-input' })
+  const [monthValid, setMonthValid] = useState({ isValid: true, classes: 'month-picker' })
+  const [dayValid, setDayValid] = useState({ isValid: true, classes: 'day-picker' })
+  const [yearValid, setYearValid] = useState({ isValid: true, classes: 'year-picker' })
   const [bioValid, setBioValid] = useState({ isValid: true, classes: 'settings-input bio' })
 
   // Function that handles the submission of the form and calls the toaster function
   // if form is completed and validated
   const handleSubmit = () => {
+    // trantisions the toaster animation in
     setToasterShow('toast')
 
+    // waits 3 seconts then transitions the toaster out
     setTimeout(function () {
       setToasterShow('no-toast')
     }, 3000)
   }
 
-  // loop creating date options
+  // loops creating date options used in the DOB question
   const years = []
   for (let i = 100; i > 0; i--) {
-    years.push(<option value={1922 + i}>{1922 + i}</option>)
+    years.push(<option value={1917 + i}>{1917 + i}</option>)
   }
   const days = []
   for (let i = 1; i <= 31; i++) {
     days.push(<option value={i}>{i}</option>)
   }
 
+  // JSX which is used by the DOM and virtual DOM to create the GUI
   return (
     <div className="settings-form-with-img">
       <div className={toasterShow}><img id="check" src={check} />Changes have been saved successfully</div>
@@ -151,8 +182,10 @@ function Form () {
 
         <label>select your date of birth*</label>
         <div id="dropdown-date">
-        <select className="month-picker">
-          <option value="Month">Month</option>
+        <select
+        onBlur={(e) => monthValidation(e)}
+        className={monthValid.classes}>
+          <option value="">Month</option>
           <option value="1">January</option>
           <option value="2">Februrary</option>
           <option value="3">March</option>
@@ -166,12 +199,16 @@ function Form () {
           <option value="11">November</option>
           <option value="12">December</option>
         </select>
-        <select className='day-picker'>
-          <option value="Day">Day</option>
+        <select
+        onBlur={(e) => dayValidation(e)}
+        className={dayValid.classes}>
+          <option value="">Day</option>
           {days}
         </select>
-        <select className='year-picker'>
-          <option>Year</option>
+        <select
+        onBlur={(e) => yearValidation(e)}
+        className={yearValid.classes}>
+          <option value="">Year</option>
           {years}
         </select>
         </div>
@@ -200,10 +237,26 @@ function Form () {
       <div className="image-drop">
         <label className="image">image</label>
         <div className="image-wrapper">
-        <img src={unicorn}/>
-        <img id="upload" src={upload}/>
+        <Dropzone onDrop={acceptedFiles => {
+          console.log(acceptedFiles)
+          setProfilePic(
+            acceptedFiles.map((file) => Object.assign(file, {
+              preview: URL.createObjectURL(file)
+            }))
+          )
+        }}>
+          {({ getRootProps, getInputProps }) => (
+            <section id="drag-drop">
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <img style={{ width: '125px' }} src={ profilePic[0].preview || unicorn }/>
+                <img id="upload" src={upload}/>
+                <h5 className="remove-image">Upload</h5>
+              </div>
+            </section>
+          )}
+          </Dropzone>
         </div>
-        <h5 className="remove-image">Remove</h5>
       </div>
     </div>
   )
