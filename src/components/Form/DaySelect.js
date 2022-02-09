@@ -144,6 +144,18 @@ function DaySelect () {
             ))}
           </div>
         )}
+        <em
+        css={css`text-align:left;
+          font-family: "Montserrat", sans serif;
+          position: absolute;
+          height: 6px;
+          width: 100px;
+          left: 0;
+          bottom: 5px;
+          color: red;
+          font-size: 8px;`}>
+          { dayValid ? '' : 'This field is required*'}
+        </em>
         </div>
   )
 }

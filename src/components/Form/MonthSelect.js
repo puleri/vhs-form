@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // eslint-disable-next-line
 import React, { useState } from 'react'
 import onClickOutside from 'react-onclickoutside'
@@ -6,7 +7,7 @@ import onClickOutside from 'react-onclickoutside'
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react'
 
-function MonthSelect () {
+function MonthSelect (props) {
   const [monthValid, setMonthValid] = useState(true)
   const [isActive, setIsActive] = useState(false)
   const [selected, setSelected] = useState([])
@@ -41,13 +42,13 @@ function MonthSelect () {
     { id: '11', value: 'November' },
     { id: '12', value: 'December' }
   ]
-
   const isItemInSelection = (item) => {
     if (selected.find(current => current.id === item.id)) {
       return true
     }
     return false
   }
+
   return (
     <div css={ css`position:relative`}>
     <div
@@ -95,9 +96,9 @@ function MonthSelect () {
           <p css={css`display: flex;`}><span css={css`text-align:left;`}>{ (!selected[0]) ? 'Month' : selected[0].value } </span><span css={css`position: absolute; right: 10px;`}>{isActive
             ? <span className="fas fa-caret-down up"></span>
             : <span className="fas fa-caret-down"></span>
-}</span></p>
-</div>
-</div>
+        }</span></p>
+        </div>
+        </div>
         </div>
         <div className="dropdown-header_action">
           <p></p>
@@ -153,6 +154,18 @@ function MonthSelect () {
             ))}
           </div>
         )}
+        <em
+        css={css`text-align:left;
+          font-family: "Montserrat", sans serif;
+          position: absolute;
+          height: 6px;
+          width: 100px;
+          left: 0;
+          bottom: 5px;
+          color: red;
+          font-size: 8px;`}>
+          { monthValid ? '' : 'This field is required*'}
+        </em>
         </div>
   )
 }

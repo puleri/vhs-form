@@ -31,14 +31,13 @@ function Form () {
       phone: '',
       birthMonth: '',
       birthDay: '',
-      birthYear: ''
+      birthYear: '',
+      bio: ''
     }
   )
   const [profilePic, setProfilePic] = useState([{ preview: '' }])
-
   // state hook used for show/hide toaster notification
   const [toasterShow, setToasterShow] = useState('no-toast')
-
   // Functionw that validates unique inputs
   // and updates the UI to let the prompt the user when
   // inputs are invalid
@@ -88,28 +87,40 @@ function Form () {
       setBioValid({ isValid: true, classes: 'settings-input bio' })
     }
   }
-
   // State hooks are all used to check validation and referenced in JSX to update UI accordingly
   const [firstValid, setFirstValid] = useState({ isValid: true, classes: 'settings-input' })
   const [lastValid, setLastValid] = useState({ isValid: true, classes: 'settings-input' })
   const [emailValid, setEmailValid] = useState({ isValid: true, classes: 'settings-input' })
   const [phoneValid, setPhoneValid] = useState({ isValid: true, classes: 'settings-input' })
   const [bioValid, setBioValid] = useState({ isValid: true, classes: 'settings-input bio' })
-
   // Function that toggles between "Upload" and "Remove"
   const handlePic = (e) => profilePic && setProfilePic([{ preview: '' }])
-
   // Function that handles the submission of the form and calls the toaster function
   // if form is completed and validated
-  const handleSubmit = () => {
-    // trantisions the toaster animation in
-    setToasterShow('toast')
-
-    // waits 3 seconts then transitions the toaster out
-    setTimeout(function () {
-      setToasterShow('no-toast')
-    }, 3000)
+  const handleSubmit = (form) => {
+    if (firstValid.isValid && lastValid.isValid && emailValid.isValid && phoneValid.isValid && bioValid.isValid) {
+      useClearHandler(false)
+      setFormValues({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        birthMonth: '',
+        birthDay: '',
+        birthYear: '',
+        bio: ''
+      })
+      // trantisions the toaster animation in
+      setToasterShow('toast')
+      // waits 3 seconts then transitions the toaster out
+      setTimeout(function () {
+        setToasterShow('no-toast')
+        useClearHandler(true)
+      }, 3000)
+    }
   }
+  // Hook to handle custom dropdowns
+  const [clearHandler, useClearHandler] = useState(true)
 
   // loops creating date options used in the DOB question
 
@@ -199,9 +210,9 @@ function Form () {
 
         <label>select your date of birth*</label>
         <div id="dropdown-date" style={{ display: 'flex' }}>
-        <MonthSelect/>
-        <DaySelect />
-        <YearSelect />
+        <MonthSelect clearHandler={clearHandler}/>
+        <DaySelect clearHandler={clearHandler}/>
+        <YearSelect clearHandler={clearHandler}/>
         </div>
 
         {
