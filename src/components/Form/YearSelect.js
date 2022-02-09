@@ -10,21 +10,22 @@ function YearSelect () {
   for (let i = 100; i > 0; i--) {
     select.push({ id: i, value: 1917 + i })
   }
+  const yearValidation = (e) => {
+    if (!selected[0]) {
+      setYearValid(false)
+    } else {
+      setYearValid(true)
+    }
+  }
+  const [yearValid, setYearValid] = useState(true)
 
   const [isActive, setIsActive] = useState(false)
   const [selected, setSelected] = useState([])
   const toggle = () => setIsActive(!isActive)
 
   const handleOnClick = item => {
-    if (!selected.some(current => current.id === item.id)) {
-      setSelected([item])
-    } else {
-      const selectionAfterRemoval = selected
-      selectionAfterRemoval.filter(
-        current => current.id !== item.id
-      )
-      setSelected([...selectionAfterRemoval])
-    }
+    setYearValid(true)
+    setSelected([item])
   }
 
   YearSelect.handleClickOutside = () => setIsActive(false)
@@ -43,6 +44,8 @@ function YearSelect () {
     role="button"
     onKeyPress={() => toggle(!isActive)}
     onClick={(e) => toggle(!isActive)}
+    onBlur={(e) => yearValidation(e)}
+
     css={css`
       text-align: center;
       background: #2a2e35 ;
@@ -74,7 +77,7 @@ function YearSelect () {
       }
     `}>
       <div
-        className="dropdown-wrapper"
+      className={ yearValid ? 'year-dropdown-wrapper' : 'year-red red'}
         >
         <div classeName="dropdown-header">
           <p className="dropdown-header-title-bold"><span css={css`text-align:left;`}>{ (!selected[0]) ? 'Year' : selected[0].value } </span><span css={css`position: absolute; right: 10px;`}>{isActive

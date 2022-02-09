@@ -17,16 +17,6 @@ function MonthSelect () {
   const handleOnClick = item => {
     setMonthValid(true)
     setSelected([item])
-
-    // if (!selected.some(current => current.id === item.id)) {
-    //   setSelected([item])
-    // } else {
-    //   const selectionAfterRemoval = selected
-    //   selectionAfterRemoval.filter(
-    //     current => current.id !== item.id
-    //   )
-    //   // setSelected([...selectionAfterRemoval])
-    // }
   }
 
   const monthValidation = (e) => {

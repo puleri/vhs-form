@@ -26,15 +26,7 @@ function DaySelect () {
 
   const handleOnClick = item => {
     setDayValid(true)
-    if (!selected.some(current => current.id === item.id)) {
-      setSelected([item])
-    } else {
-      const selectionAfterRemoval = selected
-      selectionAfterRemoval.filter(
-        current => current.id !== item.id
-      )
-      setSelected([...selectionAfterRemoval])
-    }
+    setSelected([item])
   }
 
   DaySelect.handleClickOutside = () => setIsActive(false)

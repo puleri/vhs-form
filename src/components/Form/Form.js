@@ -1,4 +1,5 @@
 // React and useState import
+// eslint-disable-next-line
 import React, { useState } from 'react'
 import MonthSelect from './MonthSelect.js'
 import DaySelect from './DaySelect.js'
@@ -6,6 +7,10 @@ import YearSelect from './YearSelect.js'
 
 // Organized most CSS relevant for form page into one file
 import './Form.css'
+
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react'
 
 // Library for drag and drop file uploading
 import Dropzone from 'react-dropzone'
@@ -76,27 +81,6 @@ function Form () {
       setPhoneValid({ isValid: true, classes: 'settings-input' })
     }
   }
-  const monthValidation = (e) => {
-    if (!e.target.value) {
-      setMonthValid({ isValid: false, classes: 'month-picker not-valid' })
-    } else {
-      setMonthValid({ isValid: true, classes: 'month-picker' })
-    }
-  }
-  const dayValidation = (e) => {
-    if (!e.target.value) {
-      setDayValid({ isValid: false, classes: 'day-picker not-valid' })
-    } else {
-      setDayValid({ isValid: true, classes: 'day-picker' })
-    }
-  }
-  const yearValidation = (e) => {
-    if (!e.target.value) {
-      setYearValid({ isValid: false, classes: 'year-picker not-valid' })
-    } else {
-      setYearValid({ isValid: true, classes: 'year-picker' })
-    }
-  }
   const bioValidation = (e) => {
     if (!e.target.value) {
       setBioValid({ isValid: false, classes: 'settings-input bio not-valid' })
@@ -110,9 +94,6 @@ function Form () {
   const [lastValid, setLastValid] = useState({ isValid: true, classes: 'settings-input' })
   const [emailValid, setEmailValid] = useState({ isValid: true, classes: 'settings-input' })
   const [phoneValid, setPhoneValid] = useState({ isValid: true, classes: 'settings-input' })
-  const [monthValid, setMonthValid] = useState({ isValid: true, classes: 'month-picker' })
-  const [dayValid, setDayValid] = useState({ isValid: true, classes: 'day-picker' })
-  const [yearValid, setYearValid] = useState({ isValid: true, classes: 'year-picker' })
   const [bioValid, setBioValid] = useState({ isValid: true, classes: 'settings-input bio' })
 
   // Function that toggles between "Upload" and "Remove"
@@ -131,14 +112,6 @@ function Form () {
   }
 
   // loops creating date options used in the DOB question
-  const years = []
-  for (let i = 100; i > 0; i--) {
-    years.push(<option value={1917 + i}>{1917 + i}</option>)
-  }
-  const days = []
-  for (let i = 1; i <= 31; i++) {
-    days.push(<option value={i}>{i}</option>)
-  }
 
   // JSX which is used by the DOM and virtual DOM to create the GUI
   return (
@@ -156,7 +129,16 @@ function Form () {
         name='firstName'
         value={formValues.firstName}
         type="text" />
-        {firstValid.isValid}
+        <em
+        css={css`text-align:left;
+          font-family: "Montserrat", sans serif;
+          width: 400px;
+          height: 7px;
+          color: red;
+          font-size: 8px;`}>
+          { firstValid.isValid ? '' : 'This field is required*'}
+        </em>
+
         <label>last name*</label>
         <input
         className={lastValid.classes}
@@ -165,6 +147,15 @@ function Form () {
         name='lastname'
         value={formValues.lastName}
         type="text" />
+        <em
+        css={css`text-align:left;
+          font-family: "Montserrat", sans serif;
+          width: 400px;
+          height: 7px;
+          color: red;
+          font-size: 8px;`}>
+          { lastValid.isValid ? '' : 'This field is required*'}
+        </em>
 
         <label>email*</label>
         <input
@@ -174,6 +165,15 @@ function Form () {
         name='firstName'
         value={formValues.email}
         type="text" />
+        <em
+        css={css`text-align:left;
+          font-family: "Montserrat", sans serif;
+          width: 400px;
+          height: 7px;
+          color: red;
+          font-size: 8px;`}>
+          { emailValid.isValid ? '' : 'This field is required*'}
+        </em>
 
         <label>phone*</label>
         <input
@@ -183,55 +183,29 @@ function Form () {
         name='firstName'
         value={formValues.phone}
         type="text" />
+        <em
+        css={css`text-align:left;
+          font-family: "Montserrat", sans serif;
+          width: 400px;
+          height: 7px;
+          color: red;
+          font-size: 8px;`}>
+          { phoneValid.isValid ? '' : 'This field is required*'}
+        </em>
 
         {
-          // Date Picker
+          // Start of Custom Dropdown
         }
 
         <label>select your date of birth*</label>
-      {
         <div id="dropdown-date" style={{ display: 'flex' }}>
-        <MonthSelect
-                onBlur={(e) => monthValidation(e)}
-                className={monthValid.classes} />
+        <MonthSelect/>
         <DaySelect />
         <YearSelect />
         </div>
-      }
-        <div id="dropdown-date">
-        <select
-        onBlur={(e) => monthValidation(e)}
-        className={monthValid.classes}>
-          <option value="">Month</option>
-          <option value="1">January</option>
-          <option value="2">Februrary</option>
-          <option value="3">March</option>
-          <option value="4">April</option>
-          <option value="5">May</option>
-          <option value="6">June</option>
-          <option value="7">July</option>
-          <option value="8">August</option>
-          <option value="9">September</option>
-          <option value="10">October</option>
-          <option value="11">November</option>
-          <option value="12">December</option>
-        </select>
-        <select
-        onBlur={(e) => dayValidation(e)}
-        className={dayValid.classes}>
-          <option value="">Day</option>
-          {days}
-        </select>
-        <select
-        onBlur={(e) => yearValidation(e)}
-        className={yearValid.classes}>
-          <option value="">Year</option>
-          {years}
-        </select>
-        </div>
 
         {
-          // End of Date Picker
+          // End of Custom Dropdown
         }
 
         <label>bio*</label>
@@ -242,6 +216,15 @@ function Form () {
         name='firstName'
         value={formValues.bio}
         rows="20" cols="50" />
+        <em
+        css={css`text-align:left;
+          font-family: "Montserrat", sans serif;
+          width: 400px;
+          height: 7px;
+          color: red;
+          font-size: 8px;`}>
+          { bioValid.isValid ? '' : 'This field is required*'}
+        </em>
 
         <hr className="light-line"/>
       </form>

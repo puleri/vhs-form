@@ -281,6 +281,17 @@ input:-webkit-autofill{
   width: 82px;
   padding: 0 8px;
 }
+.year-red {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  left:-1px;
+  border-radius: 5px;
+  height: 25px;
+  border: 1px solid red;
+  width: 102px;
+  padding: 0 8px;
+}
 .red:hover,{
   outline: none;
   border: 1px solid #63686f;
